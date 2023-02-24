@@ -1,0 +1,42 @@
+version: '3'
+
+networks:
+  my-network:
+    name: my-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/24
+
+services:
+  etcd-single:
+    hostname: etcd-single
+    container_name: etcd-single
+    image: bitnami/etcd:3.5.7
+    networks:
+      my-network:
+        ipv4_address: 172.18.0.40
+    volumes:
+      - "./etcd/data:/bitnami/etcd/data"
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+    expose:
+      - 2379
+      - 2380
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+
+  etcd-keeper:
+    hostname: etcd-keeper
+    container_name: etcd-keeper
+    image: evildecay/etcdkeeper:v0.7.6
+    expose:
+      - 8080
+    ports:
+      - "8099:8080"
+    networks:
+      my-network:
+        ipv4_address: 172.18.0.41

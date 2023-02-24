@@ -1,0 +1,4 @@
+
+https://docs.nats.io/running-a-nats-service/nats_docker
+
+https://github.com/bmcustodio/docker-compose-nats-cluster

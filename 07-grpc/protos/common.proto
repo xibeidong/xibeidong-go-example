@@ -1,0 +1,49 @@
+
+// 指定的当前proto语法的版本，有2和3
+syntax="proto3";
+// 指定go 的包体，必须包含点或斜杠
+option go_package="./common";
+// 指定等会文件生成出来的package
+package common;
+
+// 定义服务主体
+service PersonGreeter{
+  // 一元RPC。客户端发送一个请求到服务端，服务端响应一个请求。
+  rpc Say(RequestSay) returns (ReplySay){}
+  //服务端流RPC，客户端发送一个请求到服务端，
+  // 获取到一个流去连续读取返回的消息，直到消息全部获取。gRPC保证单个请求的消息顺序。
+  rpc GetPoints(Person) returns (stream Point){}
+  //客户端给服务器通过流写入连续的消息，一旦客户端完成了消息写入，
+  // 就等待服务端读取完成然后返回一个响应。同时gRPC也会保证单个请求的消息顺序。
+  rpc SavePoints(stream Point) returns (ReplyCommon){}
+  //双向流。客户端和服务端都可以通过 read-write流发送一个连续的消息。
+  // 两个流之间的操作是相互独立的。
+  // 所以，客户端和服务端可以同时进行流的读写。
+  rpc ChatPoints(stream Person) returns (stream Point){}
+}
+// 定义request model
+message RequestSay{
+  string str = 1;
+  //可以用map
+  map<string,string> data = 2;
+}
+// 定义response model
+message ReplySay{
+   string str = 1;
+}
+
+// 定义response model
+message ReplyCommon{
+  bool status = 1;
+  string data = 2;
+}
+message Person{
+  string name =1;
+  int32 id =2;
+}
+message Point{
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  int32 person_id =4;
+}
