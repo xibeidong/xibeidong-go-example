@@ -1,6 +1,8 @@
-package _04_map_question
+package main
 
 import (
+	"fmt"
+	"reflect"
 	"sync"
 )
 
@@ -37,4 +39,31 @@ func run03() {
 	//    return -1
 	//}
 
+}
+
+type User struct {
+}
+
+func main() {
+	dict := make(map[int]string)
+	m := dict[12]
+	if m == "" {
+		fmt.Println("m是空string")
+	}
+	fmt.Println("m的类型是：", reflect.TypeOf(m))
+
+	dict2 := make(map[int]*User)
+	n := dict2[12]
+	if n == nil {
+		fmt.Println("n是nil")
+	}
+	fmt.Println("n的类型是：", reflect.TypeOf(n))
+
+	fmt.Println(byte(511 & 0x00ff))
+
+	var data2, data3 []byte
+	data2 = append(data3, data2...)
+
+	n2 := byte(uint16(257)) // 运行时报错，257超出byte范围
+	fmt.Println(n2)
 }

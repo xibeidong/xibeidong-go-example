@@ -1,4 +1,4 @@
-package _07_slice
+package main
 
 import "testing"
 
